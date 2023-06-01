@@ -4,6 +4,7 @@ import { Table } from "react-bootstrap";
 import ReactPaginate from "react-paginate";
 import ModalAddNew from "./ModalAddNew";
 import ModalEditUser from "./ModalEditUser";
+import ModalConfirm from "./ModalConfirm";
 import _ from "lodash";
 
 const TableUsers = (props) => {
@@ -12,10 +13,13 @@ const TableUsers = (props) => {
     const [totalPages, setTotalPages] = useState(0);
     const [isShowModalAddNew, setIsShowModalAddNew] = useState(false);
     const [isShowModalEdit, setIsShowModalEdit] = useState(false);
+    const [isShowModalDelete, setIsShowModalDelete] = useState(false);
     const [dataUserEdit, setDataUserEdit] = useState({});
+    const [dataUserDelete, setDataUserDelete] = useState({});
     const handleClose = () => {
         setIsShowModalAddNew(false);
-        setIsShowModalEdit(false)
+        setIsShowModalEdit(false);
+        setIsShowModalDelete(false);
     }
 
     const handleUpdateTable = (user) => {
@@ -25,6 +29,10 @@ const TableUsers = (props) => {
     const handleEditUser = (user) => {
         setDataUserEdit(user);
         setIsShowModalEdit(true)
+    }
+    const handleDeleteUser = (user) => {
+        setIsShowModalDelete(true);
+        setDataUserDelete(user);
     }
 
     useEffect(() => {
@@ -77,7 +85,8 @@ const TableUsers = (props) => {
                             <td>
                                 <button className="btn btn-warning mx-3"
                                     onClick={() => handleEditUser(item)}>Edit</button>
-                                <button className="btn btn-danger">Delete</button>
+                                <button className="btn btn-danger"
+                                    onClick={() => handleDeleteUser(item)}>Delete</button>
                             </td>
 
                         </tr>
@@ -109,10 +118,15 @@ const TableUsers = (props) => {
             show={isShowModalAddNew}
             handleClose={handleClose}
             handleUpdateTable={handleUpdateTable} />
-        <ModalEditUser show={isShowModalEdit}
+        <ModalEditUser
+            show={isShowModalEdit}
             dataUserEdit={dataUserEdit}
             handleClose={handleClose}
             handleEditUserFromModal={handleEditUserFromModal} />
+        <ModalConfirm
+            show={isShowModalDelete}
+            handleClose={handleClose}
+            dataUserDelete={dataUserDelete} />
 
     </>)
 }
